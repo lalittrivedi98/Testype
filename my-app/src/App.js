@@ -3,6 +3,7 @@ import './App.css';
 import quotes from './quotes.json';
 import logo from './favicon.ico';
 
+
 const randomQuote = () => {
   const randomIndex = Math.floor(Math.random() * quotes.quotes.length);
   return quotes.quotes[randomIndex];
@@ -68,13 +69,7 @@ const TyperacerGame = () => {
     }
   }, [wordIdx, quotesSplit, isTimerExpired]);
 
-  useEffect(() => {
-    if (!isTimerExpired) {
-      const elapsedTimeInSeconds = (Date.now() - startTime) / 1000;
-      const wpm = Math.round((wordsTyped / elapsedTimeInSeconds) * 60);
-      setWpm(wpm);
-    }
-  }, [wordsTyped, startTime, isTimerExpired]);
+
 
   useEffect(() => {
     setCurrentWord(quotesSplit[wordIdx]);
@@ -121,9 +116,21 @@ const TyperacerGame = () => {
     }
   };
 
+  //WPM calculation
+  useEffect(() => {
+    if (!isTimerExpired) {
+      const elapsedTimeInSeconds = (Date.now() - startTime) / 1000;
+      const wpm = Math.round((wordsTyped / elapsedTimeInSeconds) * 60);
+      setWpm(wpm);
+    }
+  }, [wordsTyped, startTime, isTimerExpired]);
+
+  //Acc calculation
   console.log("correct keystrokes:", initialQuoteLength);
   console.log("Total keystrokes:", totalKeystrokes);
   const accuracyPercentage = (initialQuoteLength / totalKeystrokes) * 100;
+
+  //AWPM calculation is just <p>Adjusted WPM: {Math.floor(wpm * (accuracyPercentage / 100))}</p>
 
   return (
     <div className="center">
